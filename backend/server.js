@@ -35,7 +35,7 @@ const interactionSchema = new mongoose.Schema({
 const Interaction = mongoose.model('Interaction', interactionSchema);
 
 // IMPORTANT: Replace with your actual Gemini API key
-const GEMINI_API_KEY = 'AIzaSyBQ9smnMFHlsOt3jEWV2k7tUEk7J5lL7IM';
+const GEMINI_API_KEY = 'your_gemini_api';
 const GEMINI_MODEL_ID = 'gemini-2.0-flash'; // Valid model ID
 const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL_ID}:generateContent`;
 
