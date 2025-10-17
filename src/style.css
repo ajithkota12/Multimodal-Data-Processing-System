@@ -1,0 +1,238 @@
+/* === Global Reset === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+/* === Animated Gradient Background === */
+body {
+  background: linear-gradient(-45deg, #1e1f29, #4b0082, #7b2ff7, #f107a3);
+  background-size: 400% 400%;
+  animation: gradientBG 12s ease infinite;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px;
+  color: #fff;
+}
+
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* === Main Container === */
+.container {
+  width: 90%;
+  max-width: 950px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 25px;
+  padding: 45px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 0 40px rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.container:hover {
+  transform: scale(1.01);
+  box-shadow: 0 0 50px rgba(255, 255, 255, 0.2);
+}
+
+/* === Headings === */
+h1 {
+  text-align: center;
+  font-size: 2.4rem;
+  background: linear-gradient(90deg, #ff8a00, #e52e71);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 30px;
+}
+
+h2 {
+  font-size: 1.6rem;
+  color: #ffdb58;
+  margin-top: 30px;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* === Upload Section === */
+.upload-section {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 25px;
+  border-radius: 18px;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.upload-section:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-5px);
+}
+
+.upload-section input[type="file"],
+.upload-section input[type="text"] {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: #fff;
+  padding: 12px;
+  border-radius: 12px;
+  width: 100%;
+  margin-top: 12px;
+  transition: all 0.3s;
+  font-size: 0.95rem;
+}
+
+.upload-section input[type="file"]::file-selector-button {
+  background: linear-gradient(90deg, #ff007f, #590fb7);
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.upload-section input[type="file"]::file-selector-button:hover {
+  background: linear-gradient(90deg, #ff4cb4, #7d2ff7);
+}
+
+.upload-section input:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.upload-section button {
+  margin-top: 15px;
+  background: linear-gradient(90deg, #ff007f, #590fb7);
+  border: none;
+  padding: 12px 18px;
+  border-radius: 12px;
+  cursor: pointer;
+  color: #fff;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(255, 0, 130, 0.4);
+}
+
+.upload-section button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 25px rgba(255, 0, 130, 0.8);
+}
+
+/* === Query Section === */
+.query-section {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 25px;
+  border-radius: 18px;
+  margin-top: 20px;
+  transition: all 0.3s ease;
+}
+
+.query-section:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-5px);
+}
+
+textarea {
+  width: 100%;
+  border-radius: 12px;
+  border: none;
+  padding: 12px;
+  font-size: 1rem;
+  resize: none;
+  height: 120px;
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+  transition: 0.3s ease;
+}
+
+textarea::placeholder {
+  color: #fafafa;
+  opacity: 0.8;
+  font-style: italic;
+}
+
+textarea:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+}
+
+input[type="search"] {
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+  transition: 0.3s ease;
+}
+
+input[type="search"]:focus {
+  background: rgba(255, 255, 255, 0.35);
+  outline: none;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
+}
+
+input::placeholder {
+  color: #fafafa;
+  opacity: 0.85;
+  font-style: italic;
+}
+
+/* === Status Section === */
+.status {
+  margin-top: 25px;
+  padding: 15px;
+  background: rgba(0, 255, 150, 0.25);
+  border-left: 6px solid #00ffae;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 255, 150, 0.2);
+}
+
+.status p {
+  color: #d4fff0;
+  font-weight: 500;
+}
+
+/* === Scrollbar === */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #7b2ff7, #f107a3);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+/* Style for input fields */
+input,
+textarea {
+  color: #fff;
+}
+
+/* Placeholder style */
+input::placeholder,
+textarea::placeholder {
+  color: #c8d8ff; /* light blue shade */
+  opacity: 1; /* ensure it's fully visible */
+  font-style: italic;
+}
+
+/* Optional: make it change on focus */
+input:focus::placeholder,
+textarea:focus::placeholder {
+  color: #a2bfff; /* brighter blue on focus */
+}
