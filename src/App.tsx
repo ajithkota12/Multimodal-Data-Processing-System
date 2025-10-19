@@ -3,6 +3,7 @@ import { Upload, FileText, Image, Music, Video, Search, Trash2, Download, AlertC
 import { getDocument, GlobalWorkerOptions } from 'pdfjs-dist';
 import './style.css';
 
+
 interface UploadedFile {
   id: number;
   name: string;
@@ -11,6 +12,10 @@ interface UploadedFile {
   content: string | ArrayBuffer | null;
   category: 'text' | 'image' | 'audio' | 'video' | 'other';
   processedAt: string;
+  extractedText?: string; // New field for extracted text from audio/video
+  assemblyaiId?: string; // New field for AssemblyAI transcript ID
+  sentiment?: any; // New field for sentiment analysis results
+  summary?: string; // New field for summary
 }
 
 const MultimodalProcessor: React.FC = () => {
@@ -105,38 +110,57 @@ const MultimodalProcessor: React.FC = () => {
     }
   };
 
-  const handleLinkSubmit = () => {
+  const handleLinkSubmit = async () => {
     setError('');
-    if (fileLink && isValidUrl(fileLink)) {
-      setFiles([
-        {
-          id: Date.now() + Math.random(),
-          name: fileLink,
-          type: fileLink.includes('youtube.com') || fileLink.includes('youtu.be') ? 'video/youtube' : 'application/octet-stream',
-          size: 0, // Size unknown for links
-          content: fileLink, // Store the link itself as content
-          category: fileLink.includes('youtube.com') || fileLink.includes('youtu.be') ? 'video' : 'other',
-          processedAt: new Date().toISOString(),
-        },
-      ]);
-      setFileLink(''); // Clear input after submission
-      setYoutubeLink('');
-    } else if (youtubeLink && isValidUrl(youtubeLink)) {
-      setFiles([
-        {
-          id: Date.now() + Math.random(),
-          name: youtubeLink,
-          type: 'video/youtube',
-          size: 0,
-          content: youtubeLink,
-          category: 'video',
-          processedAt: new Date().toISOString(),
-        },
-      ]);
-      setYoutubeLink(''); // Clear input after submission
-      setFileLink('');
-    } else {
-      setError('Please provide a valid file link or YouTube video link.');
+    setLoading(true);
+    setResponse('');
+    setFiles([]); // Clear previous files
+
+    try {
+      if (youtubeLink && isValidUrl(youtubeLink)) {
+        console.log('Processing YouTube link:', youtubeLink);
+        const apiResponse = await fetch('http://localhost:5000/api/process-youtube', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ youtubeUrl: youtubeLink })
+        });
+
+        if (!apiResponse.ok) {
+          const errorData = await apiResponse.json();
+          throw new Error(errorData.error || `API Error: ${apiResponse.status}`);
+        }
+
+        const data = await apiResponse.json();
+        console.log('YouTube processing successful:', data);
+
+        setFiles([
+          {
+            id: Date.now() + Math.random(),
+            name: youtubeLink,
+            type: 'video/youtube',
+            size: 0,
+            content: youtubeLink,
+            category: 'video',
+            processedAt: new Date().toISOString(),
+            extractedText: data.text,
+            assemblyaiId: data.id,
+            sentiment: data.sentiment_analysis_results,
+            summary: data.summary,
+          },
+        ]);
+        setYoutubeLink('');
+        setFileLink('');
+      } else if (fileLink && isValidUrl(fileLink)) {
+        // Handle general file links if needed, but for now, we'll focus on YouTube for this branch
+        setError('Direct file link processing not yet implemented. Please upload the file or use a YouTube link.');
+      } else {
+        setError('Please provide a valid file link or YouTube video link.');
+      }
+    } catch (err: any) {
+      console.error('Error in handleLinkSubmit:', err);
+      setError(`Error processing link: ${err.message}`);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -144,16 +168,66 @@ const MultimodalProcessor: React.FC = () => {
     if (!e.target.files || e.target.files.length === 0) return;
     const uploadedFile = e.target.files[0];
     setError('');
+    setLoading(true);
+    setResponse('');
     setFileLink(''); // Clear file link input
     setYoutubeLink(''); // Clear YouTube link input
 
     try {
-      const processedFile = await processFile(uploadedFile);
-      console.log("Processed File:", processedFile); // Debugging
-      setFiles([processedFile]); // Set files to only the new one
-      console.log("Files state after setFiles:", [processedFile]); // Debugging
+      const category = getFileCategory(uploadedFile.type, uploadedFile.name);
+      let processedFile: UploadedFile;
+
+      if (category === 'audio') {
+        const formData = new FormData();
+        formData.append('file', uploadedFile);
+
+        const apiResponse = await fetch('http://localhost:5000/api/upload-audio', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (!apiResponse.ok) {
+          const errorData = await apiResponse.json();
+          throw new Error(errorData.error || `API Error: ${apiResponse.status}`);
+        }
+
+        const data = await apiResponse.json();
+        processedFile = {
+          id: Date.now() + Math.random(),
+          name: uploadedFile.name,
+          type: uploadedFile.type,
+          size: uploadedFile.size,
+          content: uploadedFile.name, // Or a URL if we store it server-side
+          category: 'audio',
+          processedAt: new Date().toISOString(),
+          extractedText: data.text,
+          assemblyaiId: data.id,
+          sentiment: data.sentiment_analysis_results,
+          summary: data.summary,
+        };
+      } else if (category === 'video') {
+        // For video file uploads, we could potentially upload the video to a temporary storage
+        // and then pass its URL to AssemblyAI, similar to YouTube.
+        // For now, let's keep it simple and just mark it as video uploaded.
+        processedFile = {
+          id: Date.now() + Math.random(),
+          name: uploadedFile.name,
+          type: uploadedFile.type,
+          size: uploadedFile.size,
+          content: uploadedFile.name,
+          category: 'video',
+          processedAt: new Date().toISOString(),
+          extractedText: 'Video file uploaded (processing for transcription/summary not yet implemented for direct file upload)',
+        };
+      } else {
+        processedFile = await processFile(uploadedFile);
+      }
+
+      setFiles([processedFile]);
     } catch (err: any) {
       setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -166,12 +240,28 @@ const MultimodalProcessor: React.FC = () => {
       .map(file => {
         let fileContext = `File: ${file.name} (${file.category})\n`;
 
-        if (file.category === 'text' && typeof file.content === 'string') {
+        if (file.extractedText) {
+          fileContext += `Content: ${file.extractedText.substring(0, 2000)}...\n`;
+        } else if (file.category === 'text' && typeof file.content === 'string') {
           fileContext += `Content: ${file.content.substring(0, 2000)}...\n`;
         } else if (file.category === 'image') {
           fileContext += `Image file uploaded (visual content available)\n`;
         } else if (file.category === 'video') {
           fileContext += `YouTube Video Link: ${file.content} (visual and auditory content available)\n`;
+          if (file.summary) {
+            fileContext += `Summary: ${file.summary}\n`;
+          }
+          if (file.sentiment) {
+            fileContext += `Sentiment: ${JSON.stringify(file.sentiment)}\n`;
+          }
+        } else if (file.category === 'audio') {
+          fileContext += `Audio file uploaded (auditory content available)\n`;
+          if (file.summary) {
+            fileContext += `Summary: ${file.summary}\n`;
+          }
+          if (file.sentiment) {
+            fileContext += `Sentiment: ${JSON.stringify(file.sentiment)}\n`;
+          }
         } else if (file.content && typeof file.content === 'string' && (file.content.startsWith('http://') || file.content.startsWith('https://'))) {
           fileContext += `File Link: ${file.content} (content available via link)\n`;
         } else {
@@ -434,14 +524,33 @@ const MultimodalProcessor: React.FC = () => {
                   <p className="font-medium mb-1">Backend Status:</p>
                   <p>✅ Backend is running on port 5000</p>
                   <p className="mt-2">The system uses your Node.js backend to securely call the Gemini API.</p>
+                  <br/>
+                  <br/>
                 </div>
               </div>
             </div>
-          </div>
+                      </div>
         </div>
       </div>
+
+      {/* Footer Section */}
+      
+
+        {/* Standalone Footer Block */}
+       <footer className="bg-white/10 backdrop-blur-lg border-t border-white/20 text-center py-8 mt-auto">
+        <div className="max-w-4xl mx-auto px-4 text-gray-300 text-sm space-y-4">
+          
+          <p className="pt-2 text-gray-400 text-xs">
+            © {new Date().getFullYear()} Ajith Kumar Kota , Multimodal Data Processing System — All rights reserved.
+          </p>
+        </div>
+      </footer>
+
+      
+
     </div>
   );
 };
 
 export default MultimodalProcessor;
+

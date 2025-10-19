@@ -3,61 +3,56 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
+  font-family: "Segoe UI", sans-serif;
 }
 
-/* === Animated Gradient Background === */
+/* === SnapPod AI Dark Neon Background === */
 body {
-  background: linear-gradient(-45deg, #1e1f29, #4b0082, #7b2ff7, #f107a3);
-  background-size: 400% 400%;
-  animation: gradientBG 12s ease infinite;
+  background: linear-gradient(135deg, #120122, #22014a);
+  background-attachment: fixed;
+  color: #fff;
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding: 40px;
-  color: #fff;
-}
-
-@keyframes gradientBG {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  padding: 50px;
+  overflow-x: hidden;
 }
 
 /* === Main Container === */
 .container {
   width: 90%;
   max-width: 950px;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
   border-radius: 25px;
   padding: 45px;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  box-shadow: 0 0 40px rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  box-shadow: 0 0 40px rgba(153, 0, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
 .container:hover {
   transform: scale(1.01);
-  box-shadow: 0 0 50px rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 60px rgba(153, 0, 255, 0.25);
 }
 
-/* === Headings === */
+/* === Gradient Headings === */
 h1 {
   text-align: center;
-  font-size: 2.4rem;
-  background: linear-gradient(90deg, #ff8a00, #e52e71);
+  font-size: 2.8rem;
+  background: linear-gradient(90deg, #00d2ff, #7b2ff7, #f107a3);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 30px;
+  margin-bottom: 25px;
+  font-weight: 700;
 }
 
 h2 {
   font-size: 1.6rem;
-  color: #ffdb58;
-  margin-top: 30px;
+  color: #b59eff;
+  margin-top: 35px;
   margin-bottom: 15px;
   display: flex;
   align-items: center;
@@ -66,7 +61,7 @@ h2 {
 
 /* === Upload Section === */
 .upload-section {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
   padding: 25px;
   border-radius: 18px;
   box-shadow: 0 4px 25px rgba(0, 0, 0, 0.3);
@@ -75,12 +70,12 @@ h2 {
 
 .upload-section:hover {
   background: rgba(255, 255, 255, 0.15);
-  transform: translateY(-5px);
+  transform: translateY(-4px);
 }
 
 .upload-section input[type="file"],
 .upload-section input[type="text"] {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.15);
   border: none;
   color: #fff;
   padding: 12px;
@@ -92,55 +87,58 @@ h2 {
 }
 
 .upload-section input[type="file"]::file-selector-button {
-  background: linear-gradient(90deg, #ff007f, #590fb7);
+  background: linear-gradient(90deg, #00d2ff, #f107a3);
   color: #fff;
   border: none;
-  padding: 8px 12px;
+  padding: 8px 14px;
   border-radius: 8px;
   cursor: pointer;
+  font-weight: 600;
   transition: 0.3s ease;
 }
 
 .upload-section input[type="file"]::file-selector-button:hover {
-  background: linear-gradient(90deg, #ff4cb4, #7d2ff7);
+  background: linear-gradient(90deg, #42e4ff, #ff52c1);
 }
 
 .upload-section input:focus {
   outline: none;
-  background: rgba(255, 255, 255, 0.3);
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 0 12px rgba(255, 0, 180, 0.5);
 }
 
+/* === Gradient Button === */
 .upload-section button {
-  margin-top: 15px;
-  background: linear-gradient(90deg, #ff007f, #590fb7);
+  margin-top: 18px;
+  background: linear-gradient(90deg, #00d2ff, #f107a3);
   border: none;
   padding: 12px 18px;
   border-radius: 12px;
   cursor: pointer;
   color: #fff;
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: 0.5px;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 10px rgba(255, 0, 130, 0.4);
+  box-shadow: 0 0 15px rgba(241, 7, 163, 0.5);
 }
 
 .upload-section button:hover {
   transform: scale(1.05);
-  box-shadow: 0 0 25px rgba(255, 0, 130, 0.8);
+  box-shadow: 0 0 25px rgba(0, 210, 255, 0.8);
 }
 
 /* === Query Section === */
 .query-section {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
   padding: 25px;
   border-radius: 18px;
-  margin-top: 20px;
+  margin-top: 25px;
   transition: all 0.3s ease;
 }
 
 .query-section:hover {
   background: rgba(255, 255, 255, 0.15);
-  transform: translateY(-5px);
+  transform: translateY(-4px);
 }
 
 textarea {
@@ -151,58 +149,63 @@ textarea {
   font-size: 1rem;
   resize: none;
   height: 120px;
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.15);
   color: #fff;
   transition: 0.3s ease;
 }
 
 textarea::placeholder {
-  color: #fafafa;
-  opacity: 0.8;
+  color: #d8d8ff;
+  opacity: 0.9;
   font-style: italic;
 }
 
 textarea:focus {
   outline: none;
-  background: rgba(255, 255, 255, 0.35);
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 0 15px rgba(0, 210, 255, 0.5);
 }
 
+/* === Search Input === */
 input[type="search"] {
   width: 100%;
   margin-top: 12px;
   padding: 12px;
   border-radius: 12px;
   border: none;
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.15);
   color: #fff;
   transition: 0.3s ease;
 }
 
 input[type="search"]:focus {
-  background: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.25);
   outline: none;
-  box-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
+  box-shadow: 0 0 12px rgba(0, 210, 255, 0.4);
 }
 
 input::placeholder {
-  color: #fafafa;
-  opacity: 0.85;
+  color: #c8d8ff;
+  opacity: 1;
   font-style: italic;
+}
+
+input:focus::placeholder {
+  color: #9ecfff;
 }
 
 /* === Status Section === */
 .status {
   margin-top: 25px;
   padding: 15px;
-  background: rgba(0, 255, 150, 0.25);
-  border-left: 6px solid #00ffae;
+  background: rgba(0, 255, 200, 0.15);
+  border-left: 5px solid #00d2ff;
   border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(0, 255, 150, 0.2);
+  box-shadow: 0 4px 15px rgba(0, 255, 200, 0.15);
 }
 
 .status p {
-  color: #d4fff0;
+  color: #bfffee;
   font-weight: 500;
 }
 
@@ -215,24 +218,5 @@ input::placeholder {
   border-radius: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
-}
-/* Style for input fields */
-input,
-textarea {
-  color: #fff;
-}
-
-/* Placeholder style */
-input::placeholder,
-textarea::placeholder {
-  color: #c8d8ff; /* light blue shade */
-  opacity: 1; /* ensure it's fully visible */
-  font-style: italic;
-}
-
-/* Optional: make it change on focus */
-input:focus::placeholder,
-textarea:focus::placeholder {
-  color: #a2bfff; /* brighter blue on focus */
+  background: rgba(255, 255, 255, 0.08);
 }
